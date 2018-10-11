@@ -7,4 +7,5 @@ setup(name="checkpatch",
       author="Nadav Tenenbaum",
       author_email="tnadav@gmail.com",
       packages=['checkpatch'],
+      include_package_data=True,
       zip_safe=False)

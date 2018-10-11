@@ -1,0 +1,3 @@
+include checkpatch/checkpatch.pl
+include checkpatch/const_structs.checkpatch
+include checkpatch/spelling.txt
