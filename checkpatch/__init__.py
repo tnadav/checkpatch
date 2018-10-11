@@ -48,9 +48,7 @@ def checked_files(src_dir):
 
             yield os.path.join(abs_src_dir, root, file_name)
 
-def checkdir(src_dir):
-
-    files = list(checked_files(src_dir))
+def checkfiles(files):
     if len(files) == 0:
         print("Nothing to do")
         return True
@@ -60,3 +58,11 @@ def checkdir(src_dir):
     args.extend(files)
     exit_code = subprocess.call(args)
     return exit_code == 0
+
+def checkdir(src_dir):
+
+    files = list(checked_files(src_dir))
+    return checkfiles(files)
+
+def checkfile(file_path):
+    return checkfiles([file_path])
