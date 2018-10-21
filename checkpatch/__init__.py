@@ -9,6 +9,7 @@ SOURCE_FILE_EXTENTIONS = [
 
 IGNORE_LIST = [
     "SPDX_LICENSE_TAG",
+    "AVOID_EXTERNS",
 ]
 
 def format_ignore_arg():
