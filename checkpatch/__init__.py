@@ -19,13 +19,19 @@ def sys_path():
     for p in os.environ['PATH'].split(":"):
         yield p
 
-def locate_perl():
+def locate_exe(exe_name):
     for p in os.environ['PATH'].split(":"):
-        perl_exe = os.path.join(p, 'perl')
-        if os.path.isfile(perl_exe):
-		return perl_exe
+        exe_path = os.path.join(p, exe_name)
+        if os.path.isfile(exe_path):
+		return exe_path
 
-    raise RuntimeError("Couldn't locate perl executable!")
+    raise RuntimeError("Couldn't locate {0} executable!".format(exe_name))
+
+def locate_perl():
+	return locate_exe("perl")
+
+def locate_git():
+	return locate_exe("git")
 
 def locate_checkpatch():
     py_path = os.path.abspath(__file__)
@@ -67,3 +73,13 @@ def checkdir(src_dir):
 
 def checkfile(file_path):
     return checkfiles([file_path])
+
+def checkpatch(from_commit, to_commit):
+    diff = subprocess.Popen([locate_git(), "diff", from_commit, to_commit],
+                            stdout = subprocess.PIPE)
+    checkpatch = subprocess.Popen([locate_perl(), locate_checkpatch(), "-no-tree",
+                                   format_ignore_arg()], stdin = diff.stdout)
+    diff.stdout.close()
+    checkpatch.communicate()
+
+    return checkpatch.returncode == 0
